@@ -12,8 +12,7 @@ keywords = [
     "http",
     "fullstack",
     "compile-time",
-    "axum",
-    "client-server",
+    "client-server"
 ]
 categories = [
     "web-programming",
