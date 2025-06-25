@@ -1,5 +1,5 @@
 [package]
-name = "rust-api-integrator"
+name = "rust-api-kit"
 version = "0.1.0"
 edition = "2024"
 authors = ["sterrlia <dev@sterrlia.com>"]
