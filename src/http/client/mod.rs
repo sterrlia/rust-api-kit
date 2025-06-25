@@ -1,5 +1,6 @@
 pub mod macros;
 mod types;
+use async_trait::async_trait;
 use integration::log_error;
 pub use types::*;
 pub mod integration;
@@ -39,6 +40,7 @@ pub trait HttpClientTrait {
     fn get_client(&self) -> reqwest::Client;
 }
 
+#[async_trait]
 pub trait AuthenticatedHttpClientTrait
 where
     Self: HttpClientTrait,
@@ -49,11 +51,11 @@ where
         auth: A,
     ) -> Result<Result<O, E>, UnexpectedHttpError<U>>
     where
-        O: for<'de> Deserialize<'de>,
-        E: for<'de> Deserialize<'de>,
+        O: for<'de> Deserialize<'de> + Send + 'static,
+        E: for<'de> Deserialize<'de> + Send + 'static,
         U: for<'de> Deserialize<'de> + Clone,
-        R: HttpRequest<O, E, U> + Serialize + AuthenticatedHttpRequest<A>,
-        A: Auth,
+        R: HttpRequest<O, E, U> + Serialize + AuthenticatedHttpRequest<A> + Send + 'static,
+        A: Auth + Send + 'static,
     {
         let base_url = self.get_base_url();
         let client = self.get_client();
@@ -65,16 +67,17 @@ where
     }
 }
 
+#[async_trait]
 pub trait BasicHttpClientTrait
 where
     Self: HttpClientTrait,
 {
     async fn request<R, O, E, U>(&self, request: R) -> Result<Result<O, E>, UnexpectedHttpError<U>>
     where
-        O: for<'de> Deserialize<'de>,
-        E: for<'de> Deserialize<'de>,
-        U: for<'de> Deserialize<'de> + Clone,
-        R: HttpRequest<O, E, U> + Serialize,
+        O: for<'de> Deserialize<'de> + Send + 'static,
+        E: for<'de> Deserialize<'de> + Send + 'static,
+        U: for<'de> Deserialize<'de> + Send + 'static,
+        R: HttpRequest<O, E, U> + Serialize + Send + 'static,
     {
         let base_url = self.get_base_url();
         let client = self.get_client();
@@ -99,7 +102,7 @@ pub trait HttpRequest<O, E, U>
 where
     O: for<'de> Deserialize<'de>,
     E: for<'de> Deserialize<'de>,
-    U: for<'de> Deserialize<'de> + Clone,
+    U: for<'de> Deserialize<'de>,
     Self: Sized + Serialize,
 {
     const ENDPOINT: &'static str;
@@ -118,7 +121,7 @@ fn get_request_builder<R, O, E, U>(
 where
     O: for<'de> Deserialize<'de>,
     E: for<'de> Deserialize<'de>,
-    U: for<'de> Deserialize<'de> + Clone,
+    U: for<'de> Deserialize<'de>,
     R: HttpRequest<O, E, U>,
 {
     let endpoint_url = R::get_url(base_url);
@@ -141,7 +144,7 @@ async fn perform<R, O, E, U>(
 where
     O: for<'de> Deserialize<'de>,
     E: for<'de> Deserialize<'de>,
-    U: for<'de> Deserialize<'de> + Clone,
+    U: for<'de> Deserialize<'de>,
     R: HttpRequest<O, E, U>,
 {
     let request = request_builder.build()?;

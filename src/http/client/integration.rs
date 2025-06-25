@@ -1,7 +1,7 @@
 use super::{RequestError, RequestMethod, UnexpectedHttpError};
 
 impl<T> From<serde_json::Error> for UnexpectedHttpError<T> {
-    fn from(value: serde_json::Error) -> Self {
+    fn from(_: serde_json::Error) -> Self {
         UnexpectedHttpError::Request(RequestError::Deserialize)
     }
 }
