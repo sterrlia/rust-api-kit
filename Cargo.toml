@@ -2,7 +2,7 @@
 name = "rust-api-integrator"
 version = "0.1.0"
 edition = "2024"
-authors = ["b8end27 <b8end27@outlook.com>"]
+authors = ["sterrlia <dev@sterrlia.com>"]
 license = "MIT"
 license-file = "LICENSE"
 
