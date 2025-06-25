@@ -10,14 +10,10 @@ readme = "README.md"
 keywords = [
     "api",
     "http",
-    "rest",
     "fullstack",
-    "shared-types",
     "compile-time",
     "axum",
     "client-server",
-    "codegen",
-    "macro"
 ]
 categories = [
     "web-programming",
