@@ -1,3 +1,5 @@
+# rust-api-kit
+
 ## ✨ Features
 
 - Define your API in one place (routes, requests, responses)
