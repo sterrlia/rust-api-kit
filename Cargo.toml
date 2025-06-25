@@ -3,6 +3,29 @@ name = "rust-api-kit"
 version = "0.1.0"
 edition = "2024"
 authors = ["sterrlia <dev@sterrlia.com>"]
+description = "A type-safe API definition toolkit for Rust — define your API once and share it across client and server, with compile-time guarantees."
+repository = "https://github.com/sterrlia/rust-api-kit"
+documentation = "https://docs.rs/rust-api-kit"
+readme = "README.md"
+keywords = [
+    "api",
+    "http",
+    "rest",
+    "fullstack",
+    "shared-types",
+    "compile-time",
+    "axum",
+    "client-server",
+    "codegen",
+    "macro"
+]
+categories = [
+    "web-programming",
+    "api-bindings",
+    "network-programming",
+    "asynchronous",
+    "development-tools"
+]
 license = "MIT"
 license-file = "LICENSE"
 
@@ -10,13 +33,14 @@ license-file = "LICENSE"
 reqwest = { version = "0.12.20", features = ["json"] }
 serde = { version = "1.0.219", features = ["derive", "serde_derive"] }
 serde_json = "1.0.140"
-tracing = "0.1.41"
 url = { version = "2.5.4", features = ["std", "serde"] }
+tracing = { version = "0.1.41", optional = true }
 axum = { version = "0.8.3", optional = true }
 anyhow = { version = "1.0.98", optional = true }
 
 [features]
-default = []
-all = ["axum", "anyhow"]
+default = ["all"]
+all = ["axum", "anyhow", "tracing"]
 axum-integration =  ["axum"]
 anyhow-integration = ["anyhow"]
+tracing-integration = ["tracing"]

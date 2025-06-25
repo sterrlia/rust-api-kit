@@ -1,5 +1,6 @@
 pub mod macros;
 mod types;
+use integration::log_error;
 pub use types::*;
 pub mod integration;
 
@@ -154,12 +155,12 @@ where
         .map_err(|err| UnexpectedHttpError::from(err))?;
 
     let body: Response<O, E, U> = serde_json::from_str(body_raw.as_str()).inspect_err(|err| {
-        tracing::error!(
+        log_error(format!(
             "Deserialization error {:?}, method: {}, response body: '{}'",
             err,
             method,
             body_raw
-        );
+        ));
     })?;
 
     match body {
