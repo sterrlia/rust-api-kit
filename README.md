@@ -117,3 +117,12 @@ pub fn login(&self, username: String, password: String) -> anyhow::Result<UserDa
 8. Websocket client
 and etc.
 
+## Status
+
+- This project is built for educations purposes
+- It is intended for use in my personal projects only
+
+## Alternatives
+
+- https://github.com/paperclip-rs/paperclip
+
