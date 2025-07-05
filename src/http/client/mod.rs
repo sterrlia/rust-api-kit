@@ -52,8 +52,8 @@ where
     ) -> Result<Result<O, E>, UnexpectedHttpError<U>>
     where
         O: for<'de> Deserialize<'de> + Send + 'static,
-        E: for<'de> Deserialize<'de> + Send + 'static,
-        U: for<'de> Deserialize<'de> + Clone,
+        E: for<'de> Deserialize<'de> + Send + std::fmt::Debug + 'static,
+        U: for<'de> Deserialize<'de> + Send + std::fmt::Debug + 'static,
         R: HttpRequest<O, E, U> + Serialize + AuthenticatedHttpRequest<A> + Send + 'static,
         A: Auth + Send + 'static,
     {
@@ -75,8 +75,8 @@ where
     async fn request<R, O, E, U>(&self, request: R) -> Result<Result<O, E>, UnexpectedHttpError<U>>
     where
         O: for<'de> Deserialize<'de> + Send + 'static,
-        E: for<'de> Deserialize<'de> + Send + 'static,
-        U: for<'de> Deserialize<'de> + Send + 'static,
+        E: for<'de> Deserialize<'de> + Send + std::fmt::Debug + 'static,
+        U: for<'de> Deserialize<'de> + Send + std::fmt::Debug + 'static,
         R: HttpRequest<O, E, U> + Serialize + Send + 'static,
     {
         let base_url = self.get_base_url();
@@ -101,8 +101,8 @@ pub trait AuthenticatedHttpRequest<A> {}
 pub trait HttpRequest<O, E, U>
 where
     O: for<'de> Deserialize<'de>,
-    E: for<'de> Deserialize<'de>,
-    U: for<'de> Deserialize<'de>,
+    E: for<'de> Deserialize<'de> + std::fmt::Debug,
+    U: for<'de> Deserialize<'de> + std::fmt::Debug,
     Self: Sized + Serialize,
 {
     const ENDPOINT: &'static str;
@@ -120,8 +120,8 @@ fn get_request_builder<R, O, E, U>(
 ) -> RequestBuilder
 where
     O: for<'de> Deserialize<'de>,
-    E: for<'de> Deserialize<'de>,
-    U: for<'de> Deserialize<'de>,
+    E: for<'de> Deserialize<'de> + std::fmt::Debug,
+    U: for<'de> Deserialize<'de> + std::fmt::Debug,
     R: HttpRequest<O, E, U>,
 {
     let endpoint_url = R::get_url(base_url);
@@ -143,13 +143,11 @@ async fn perform<R, O, E, U>(
 ) -> Result<Result<O, E>, UnexpectedHttpError<U>>
 where
     O: for<'de> Deserialize<'de>,
-    E: for<'de> Deserialize<'de>,
-    U: for<'de> Deserialize<'de>,
+    E: for<'de> Deserialize<'de> + std::fmt::Debug,
+    U: for<'de> Deserialize<'de> + std::fmt::Debug,
     R: HttpRequest<O, E, U>,
 {
     let request = request_builder.build()?;
-    let method = request.method().clone();
-
     let response = client.execute(request).await?;
 
     let body_raw = response
@@ -159,16 +157,30 @@ where
 
     let body: Response<O, E, U> = serde_json::from_str(body_raw.as_str()).inspect_err(|err| {
         log_error(format!(
-            "Deserialization error {:?}, method: {}, response body: '{}'",
-            err,
-            method,
-            body_raw
+            "Deserialization error {:?}, {} -> '{}'",
+            err, std::any::type_name::<R>(), body_raw
         ));
     })?;
 
     match body {
         Response::Ok(ok) => Ok(Ok(ok)),
-        Response::Error(error) => Ok(Err(error)),
-        Response::UnexpectedError(error) => Err(UnexpectedHttpError::Api(error)),
+        Response::Error(error) => {
+            log_error(format!(
+                "Http error {} -> {:?}",
+                std::any::type_name::<R>(),
+                error
+            ));
+
+            Ok(Err(error))
+        }
+        Response::UnexpectedError(error) => {
+            log_error(format!(
+                "Unexpected http error {} -> {:?}",
+                std::any::type_name::<R>(),
+                error
+            ));
+
+            Err(UnexpectedHttpError::Api(error))
+        }
     }
 }

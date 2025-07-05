@@ -1,5 +1,5 @@
-#[cfg(any(feature = "anyhow-integration", feature = "all"))]
+#[cfg(feature = "anyhow-integration")]
 pub mod anyhow_integration;
-#[cfg(any(feature = "axum-integration", feature = "all"))]
+#[cfg(feature = "axum-integration")]
 pub mod axum_integration;
 pub mod client;

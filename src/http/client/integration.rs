@@ -42,5 +42,6 @@ impl Into<reqwest::Method> for RequestMethod {
 }
 
 pub fn log_error(message: String) {
+    #[cfg(feature = "logs")]
     tracing::error!(message)
 }

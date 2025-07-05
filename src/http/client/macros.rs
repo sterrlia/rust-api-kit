@@ -3,6 +3,7 @@ macro_rules! define_http_routes {
     (
         $(
             group (
+                path $path_prefix:literal;
                 $(auth $auth_ty:ty;)?
                 error $unexpected:ty;
 
@@ -13,14 +14,14 @@ macro_rules! define_http_routes {
         )*
     ) => {
         $(
-            $crate::define_http_routes!(@impl_group $(auth $auth_ty;)? $unexpected; $(($method, $path, $req, $res, $err))*);
+            $crate::define_http_routes!(@impl_group $(auth $auth_ty;)? $unexpected; $path_prefix; $(($method, $path, $req, $res, $err))*);
         )*
     };
 
-    (@impl_group auth $auth_ty:ty; $unexpected:ty; $(($method:ident, $path:literal, $req:ty, $res:ty, $err:ty))*) => {
+    (@impl_group auth $auth_ty:ty; $unexpected:ty; $path_prefix:literal; $(($method:ident, $path:literal, $req:ty, $res:ty, $err:ty))*) => {
         $(
             impl $crate::http::client::HttpRequest<$res, $err, $unexpected> for $req {
-                const ENDPOINT: &'static str = concat!("/", $path);
+                const ENDPOINT: &'static str = concat!("/", $path_prefix, "/", $path);
                 const METHOD: $crate::http::client::RequestMethod = $crate::http::client::RequestMethod::$method;
             }
 
@@ -59,10 +60,10 @@ macro_rules! define_http_routes {
         )*
     };
 
-    (@impl_group $unexpected:ty; $(($method:ident, $path:literal, $req:ty, $res:ty, $err:ty))*) => {
+    (@impl_group $unexpected:ty; $path_prefix:literal; $(($method:ident, $path:literal, $req:ty, $res:ty, $err:ty))*) => {
         $(
             impl $crate::http::client::HttpRequest<$res, $err, $unexpected> for $req {
-                const ENDPOINT: &'static str = concat!("/", $path);
+                const ENDPOINT: &'static str = concat!("/", $path_prefix, "/", $path);
                 const METHOD: $crate::http::client::RequestMethod = $crate::http::client::RequestMethod::$method;
             }
 

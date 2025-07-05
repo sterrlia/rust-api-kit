@@ -34,8 +34,7 @@ anyhow = { version = "1.0.98", optional = true }
 async-trait = "0.1.88"
 
 [features]
-default = ["all"]
-all = ["axum", "anyhow", "tracing"]
+default = ["anyhow-integration", "axum-integration", "logs"]
 axum-integration =  ["axum"]
 anyhow-integration = ["anyhow"]
-tracing-integration = ["tracing"]
+logs = ["tracing"]
