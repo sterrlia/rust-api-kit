@@ -115,7 +115,16 @@ pub fn login(&self, username: String, password: String) -> anyhow::Result<UserDa
 }
 ```
 
-### 4. What can be added
+## Status
+
+- This project is built for educations purposes
+- It is intended for use in my personal projects only, cause I don't think someone would find it useful
+
+## Alternatives
+
+- https://github.com/paperclip-rs/paperclip
+
+## What can be added in future
 
 1. Trait for custom response types
 2. Improved logging
@@ -127,14 +136,4 @@ pub fn login(&self, username: String, password: String) -> anyhow::Result<UserDa
 8. Websocket client
 9. OpenAPI definitions generation
 10. Code generation from OpenAPI definitions
-10. etc.
-
-## Status
-
-- This project is built for educations purposes
-- It is intended for use in my personal projects only, cause I don't think someone would find it useful
-
-## Alternatives
-
-- https://github.com/paperclip-rs/paperclip
-
+11. etc.
