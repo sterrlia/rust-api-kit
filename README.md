@@ -40,19 +40,29 @@ pub enum UnexpectedErrorResponse {
     InternalServerError,
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(tag = "type")]
+pub enum AuthenticatedUnexpectedErrorResponse {
+    InternalServerError,
+    InvalidAuthToken,
+    AuthTokenMissing
+}
+
 define_http_routes! {
     group (
+        path "api";
         auth BearerToken;
         error AuthenticatedUnexpectedErrorResponse;
 
-        GET "api/get-messages" GetMessagesRequest => GetMessagesResponse | GetMessagesErrorResponse;
-        GET "api/get-users" GetUsersRequest => GetUsersResponse | GetUsersErrorResponse;
+        GET "get-messages" GetMessagesRequest => GetMessagesResponse | GetMessagesErrorResponse;
+        GET "get-users" GetUsersRequest => GetUsersResponse | GetUsersErrorResponse;
     );
 
     group (
+        path "api";
         error UnexpectedErrorResponse;
 
-        POST "api/login" LoginRequest => LoginResponse | LoginErrorResponse;
+        POST "login" LoginRequest => LoginResponse | LoginErrorResponse;
     );
 }
 
@@ -115,12 +125,14 @@ pub fn login(&self, username: String, password: String) -> anyhow::Result<UserDa
 6. Integrations with backend frameworks
 7. Server route implementation checking
 8. Websocket client
-and etc.
+9. OpenAPI definitions generation
+10. Code generation from OpenAPI definitions
+10. etc.
 
 ## Status
 
 - This project is built for educations purposes
-- It is intended for use in my personal projects only
+- It is intended for use in my personal projects only, cause I don't think someone would find it useful
 
 ## Alternatives
 
