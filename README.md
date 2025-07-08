@@ -115,6 +115,9 @@ pub fn login(&self, username: String, password: String) -> anyhow::Result<UserDa
 }
 ```
 
+### More examples
+My messenger project: https://github.com/sterrlia/nultr
+
 ## Status
 
 - This project is built for educations purposes
