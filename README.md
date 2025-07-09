@@ -133,10 +133,9 @@ My messenger project: https://github.com/sterrlia/nultr
 2. Improved logging
 3. More auth variants
 4. Headers
-5. Group route prefixes
-6. Integrations with backend frameworks
-7. Server route implementation checking
-8. Websocket client
-9. OpenAPI definitions generation
-10. Code generation from OpenAPI definitions
-11. etc.
+5. Integrations with backend frameworks
+6. Server route implementation checking
+7. Websocket client
+8. OpenAPI definitions generation
+9. Code generation from OpenAPI definitions
+10. etc.
