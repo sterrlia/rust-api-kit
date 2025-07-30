@@ -1,4 +1,5 @@
 # rust-api-kit
+<img width="1273" height="456" alt="image" src="https://github.com/user-attachments/assets/0a6b3516-dfbc-4a12-8c1a-5e04f01ed4b9" />
 
 ## ✨ Features
 
