@@ -1,4 +1,4 @@
-name: Rust
+name: Build and check
 
 on:
   push:
@@ -11,12 +11,21 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install Clippy and Rustfmt
+      run: |
+        rustup component add clippy
+        rustup component add rustfmt
+
+    - name: Lint with Clippy
+      run: cargo clippy --all-targets --all-features -- -D warnings
+
     - name: Build
       run: cargo build --verbose
+
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test -

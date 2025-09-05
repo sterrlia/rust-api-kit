@@ -8,7 +8,7 @@ impl<T> From<serde_json::Error> for UnexpectedHttpError<T> {
 
 impl<T> From<reqwest::Error> for UnexpectedHttpError<T> {
     fn from(value: reqwest::Error) -> Self {
-        tracing::error!("Request error {:?}", value);
+        log_error(format!("Request error {:?}", value));
 
         let request_error = if let Some(status) = value.status() {
             RequestError::Http(status.as_u16())
@@ -41,7 +41,8 @@ impl Into<reqwest::Method> for RequestMethod {
     }
 }
 
+#[allow(unused_variables)]
 pub fn log_error(message: String) {
-    #[cfg(feature = "logs")]
+    #[cfg(feature = "tracing")]
     tracing::error!(message)
 }

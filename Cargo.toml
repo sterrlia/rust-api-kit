@@ -1,6 +1,6 @@
 [package]
 name = "rust-api-kit"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 authors = ["sterrlia <dev@sterrlia.com>"]
 description = "A type-safe API definition toolkit for Rust — define your API once and share it across client and server, with compile-time guarantees."
@@ -34,7 +34,7 @@ anyhow = { version = "1.0.98", optional = true }
 async-trait = "0.1.88"
 
 [features]
-default = ["anyhow-integration", "axum-integration", "logs"]
-axum-integration =  ["axum"]
-anyhow-integration = ["anyhow"]
-logs = ["tracing"]
+default = ["anyhow", "axum", "tracing"]
+axum =  ["dep:axum"]
+anyhow = ["dep:anyhow"]
+tracing = ["dep:tracing"]
