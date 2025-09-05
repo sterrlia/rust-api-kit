@@ -30,9 +30,9 @@ impl<T> From<reqwest::Error> for UnexpectedHttpError<T> {
     }
 }
 
-impl Into<reqwest::Method> for RequestMethod {
-    fn into(self) -> reqwest::Method {
-        match self {
+impl From<RequestMethod> for reqwest::Method {
+    fn from(val: RequestMethod) -> Self {
+        match val {
             RequestMethod::POST => reqwest::Method::POST,
             RequestMethod::GET => reqwest::Method::GET,
             RequestMethod::PUT => reqwest::Method::PUT,

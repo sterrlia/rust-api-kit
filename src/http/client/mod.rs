@@ -152,8 +152,7 @@ where
 
     let body_raw = response
         .text()
-        .await
-        .map_err(|err| UnexpectedHttpError::from(err))?;
+        .await?;
 
     let body: Response<O, E, U> = serde_json::from_str(body_raw.as_str()).inspect_err(|err| {
         log_error(format!(
