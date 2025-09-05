@@ -1,4 +1,4 @@
-use super::client::{integration::log_error, Response};
+use super::client::{Response, integration::log_error};
 
 impl<T, E, U> From<anyhow::Error> for Response<T, E, U>
 where

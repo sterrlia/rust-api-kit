@@ -150,14 +150,14 @@ where
     let request = request_builder.build()?;
     let response = client.execute(request).await?;
 
-    let body_raw = response
-        .text()
-        .await?;
+    let body_raw = response.text().await?;
 
     let body: Response<O, E, U> = serde_json::from_str(body_raw.as_str()).inspect_err(|err| {
         log_error(format!(
             "Deserialization error {:?}, {} -> '{}'",
-            err, std::any::type_name::<R>(), body_raw
+            err,
+            std::any::type_name::<R>(),
+            body_raw
         ));
     })?;
 

@@ -1,4 +1,4 @@
-use axum::{response::IntoResponse, Json};
+use axum::{Json, response::IntoResponse};
 use reqwest::StatusCode;
 use serde::Serialize;
 
@@ -37,5 +37,3 @@ where
         (StatusCode::OK, body).into_response()
     }
 }
-
-
