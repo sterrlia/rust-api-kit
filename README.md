@@ -1,5 +1,11 @@
 # rust-api-kit
 
+[![crates.io version](https://img.shields.io/crates/v/rust-api-kit.svg)](https://crates.io/crates/rust-api-kit)
+[![docs.rs docs](https://docs.rs/rust-api-kit/badge.svg)](https://docs.rs/rust-api-kit)
+[![CI build](https://github.com/sterrlia/rust-api-kit/actions/workflows/rust.yml/badge.svg)](https://github.com/sterrlia/rust-api-kit/actions)
+[![Dependency Status](https://deps.rs/crate/rust-api-kit/latest/status.svg)](https://deps.rs/crate/rust-api-kit)
+![Minimum Supported Rust Version](https://img.shields.io/badge/rustc-1.85.1+-ab6000.svg)
+
 ## ✨ Features
 
 - Define your API in one place (routes, requests, responses)
